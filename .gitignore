@@ -33,3 +33,5 @@ dist/
 
 # Claude Code
 .claude/
+config.bat
+node_modules
