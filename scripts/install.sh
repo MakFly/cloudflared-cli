@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ─── Constants ───────────────────────────────────────────────────────────────
-REPO="kev/cloudflared-cli"
+REPO="MakFly/cloudflared-cli"
 BINARY="cloudflared-project"
 API_URL="https://api.github.com/repos/${REPO}/releases/latest"
 RELEASES_URL="https://github.com/${REPO}/releases/download"
