@@ -4,7 +4,7 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://cloudflared-project.pulseview.app',
+  site: 'https://cloudflared.pulseview.app',
   integrations: [
     starlight({
       title: 'cloudflared-project',

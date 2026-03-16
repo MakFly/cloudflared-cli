@@ -73,7 +73,7 @@ cloudflared-project -p myapp deploy --route-dns
 
 ## Documentation
 
-Full documentation is available at **[cloudflared-project.pulseview.app](https://cloudflared-project.pulseview.app)**.
+Full documentation is available at **[cloudflared.pulseview.app](https://cloudflared.pulseview.app)**.
 
 ## Prerequisites
 
