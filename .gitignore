@@ -1,0 +1,35 @@
+# Binaries
+cloudflared-project
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test
+*.test
+*.out
+coverage.txt
+
+# Go workspace
+go.work
+go.work.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Distribution
+dist/
+
+# Project runtime
+.cloudflared-project/
+
+# Claude Code
+.claude/

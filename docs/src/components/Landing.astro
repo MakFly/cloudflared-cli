@@ -1,0 +1,757 @@
+---
+// Landing.astro — Bespoke hero for cloudflared-project docs
+---
+
+<div class="landing">
+  <!-- Animated background -->
+  <div class="landing__bg">
+    <div class="landing__grid"></div>
+    <div class="landing__glow landing__glow--1"></div>
+    <div class="landing__glow landing__glow--2"></div>
+    <div class="landing__glow--3"></div>
+    <div class="landing__noise"></div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__badge">
+      <span class="hero__badge-dot"></span>
+      <span>Open Source CLI Tool</span>
+    </div>
+
+    <h1 class="hero__title">
+      <span class="hero__title-line hero__title-line--1">Cloudflare Tunnels,</span>
+      <span class="hero__title-line hero__title-line--2">finally<span class="hero__title-accent"> tamed.</span></span>
+    </h1>
+
+    <p class="hero__sub">
+      Project-aware configuration. Multi-environment deploys.<br />
+      One CLI to rule your tunnel lifecycle.
+    </p>
+
+    <div class="hero__actions">
+      <a href="/guides/installation/" class="hero__btn hero__btn--primary">
+        <span>Get Started</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="https://github.com/kev/cloudflared-cli" class="hero__btn hero__btn--ghost">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Terminal demo -->
+  <section class="terminal-section">
+    <div class="terminal">
+      <div class="terminal__chrome">
+        <div class="terminal__dots">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="terminal__title">cloudflared-project</div>
+      </div>
+      <div class="terminal__body">
+        <div class="terminal__line terminal__line--1">
+          <span class="t-prompt">$</span>
+          <span class="t-cmd">cloudflared-project</span>
+          <span class="t-arg">init</span>
+          <span class="t-str">myapp</span>
+          <span class="t-flag">--domain</span>
+          <span class="t-str">app.example.com</span>
+        </div>
+        <div class="terminal__line terminal__line--2 terminal__line--output">
+          <span class="t-ok">&#10003;</span>
+          <span class="t-text">Project "myapp" initialized</span>
+        </div>
+        <div class="terminal__line terminal__line--3 terminal__line--output">
+          <span class="t-info">&#8594;</span>
+          <span class="t-dim">Location: ~/.cloudflared/projects/myapp</span>
+        </div>
+        <div class="terminal__line terminal__line--4">
+          <span class="t-prompt">$</span>
+          <span class="t-cmd">cloudflared-project</span>
+          <span class="t-flag">-p</span>
+          <span class="t-str">myapp</span>
+          <span class="t-arg">deploy</span>
+          <span class="t-flag">--route-dns</span>
+        </div>
+        <div class="terminal__line terminal__line--5 terminal__line--output">
+          <span class="t-ok">&#10003;</span>
+          <span class="t-text">Configuration validated</span>
+          <span class="t-dim">[dev]</span>
+        </div>
+        <div class="terminal__line terminal__line--6 terminal__line--output">
+          <span class="t-ok">&#10003;</span>
+          <span class="t-text">DNS routed: app.example.com</span>
+        </div>
+        <div class="terminal__line terminal__line--7 terminal__line--output">
+          <span class="t-info">&#8594;</span>
+          <span class="t-text">Tunnel connected</span>
+          <span class="t-dim">&#183; 4 connections &#183; Paris (CDG)</span>
+        </div>
+        <div class="terminal__line terminal__line--8">
+          <span class="t-prompt">$</span>
+          <span class="t-cursor"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="features__grid">
+      <div class="feature">
+        <div class="feature__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+        </div>
+        <h3 class="feature__title">Project-aware</h3>
+        <p class="feature__desc">Isolated configs per project in <code>~/.cloudflared/projects/</code>. No more tangled YAML sprawl.</p>
+      </div>
+      <div class="feature">
+        <div class="feature__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16"/></svg>
+        </div>
+        <h3 class="feature__title">Multi-environment</h3>
+        <p class="feature__desc">Dev, staging, prod &mdash; each with its own ingress rules, tunnel IDs, and credentials.</p>
+      </div>
+      <div class="feature">
+        <div class="feature__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3 class="feature__title">Full lifecycle</h3>
+        <p class="feature__desc">Init, create, configure, validate, deploy, monitor, teardown &mdash; every step covered.</p>
+      </div>
+      <div class="feature">
+        <div class="feature__icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feature__title">Production-ready</h3>
+        <p class="feature__desc">Graceful shutdown, PID management, config validation, detached mode. Ship with confidence.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture diagram -->
+  <section class="arch">
+    <h2 class="arch__title">How it works</h2>
+    <div class="arch__flow">
+      <div class="arch__node">
+        <div class="arch__node-icon">&#9654;</div>
+        <div class="arch__node-label">Your app</div>
+        <div class="arch__node-detail">localhost:8080</div>
+      </div>
+      <div class="arch__connector">
+        <div class="arch__connector-line"></div>
+        <div class="arch__connector-dot"></div>
+      </div>
+      <div class="arch__node arch__node--highlight">
+        <div class="arch__node-icon">&#9670;</div>
+        <div class="arch__node-label">cloudflared-project</div>
+        <div class="arch__node-detail">init &middot; config &middot; deploy</div>
+      </div>
+      <div class="arch__connector">
+        <div class="arch__connector-line arch__connector-line--encrypted"></div>
+        <div class="arch__connector-dot"></div>
+      </div>
+      <div class="arch__node">
+        <div class="arch__node-icon">&#9729;</div>
+        <div class="arch__node-label">Cloudflare Edge</div>
+        <div class="arch__node-detail">app.example.com</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <p class="cta__text">Ready to simplify your tunnel workflow?</p>
+    <div class="cta__actions">
+      <a href="/guides/quickstart/" class="hero__btn hero__btn--primary">
+        <span>Quick Start Guide</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="/reference/commands/" class="hero__btn hero__btn--ghost">
+        <span>Command Reference</span>
+      </a>
+    </div>
+  </section>
+</div>
+
+<style>
+  /* ══════════════════════════════════════════
+     FONTS
+     ══════════════════════════════════════════ */
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Instrument+Sans:wght@400;500;600;700&display=swap');
+
+  /* ══════════════════════════════════════════
+     VARIABLES
+     ══════════════════════════════════════════ */
+  .landing {
+    --c-bg: #07080d;
+    --c-surface: #0d0f17;
+    --c-border: rgba(255, 255, 255, 0.06);
+    --c-text: #c4cad7;
+    --c-text-dim: #5a6175;
+    --c-heading: #eef0f6;
+    --c-accent: #f97316;
+    --c-accent-glow: rgba(249, 115, 22, 0.15);
+    --c-green: #22c55e;
+    --c-cyan: #06b6d4;
+    --c-blue: #3b82f6;
+    --font-display: 'Instrument Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+  }
+
+  /* ══════════════════════════════════════════
+     LAYOUT
+     ══════════════════════════════════════════ */
+  .landing {
+    position: relative;
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--font-display);
+    overflow: hidden;
+    padding: 0 1.5rem;
+  }
+
+  /* ══════════════════════════════════════════
+     BACKGROUND
+     ══════════════════════════════════════════ */
+  .landing__bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .landing__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black, transparent);
+  }
+
+  .landing__glow--1 {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, var(--c-accent-glow) 0%, transparent 70%);
+    filter: blur(80px);
+  }
+
+  .landing__glow--2 {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    bottom: 20%;
+    right: -100px;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+    filter: blur(60px);
+  }
+
+  .landing__glow--3 {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    bottom: 40%;
+    left: -80px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
+    filter: blur(50px);
+  }
+
+  .landing__noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.3;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  /* ══════════════════════════════════════════
+     HERO
+     ══════════════════════════════════════════ */
+  .hero {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding-top: clamp(4rem, 12vh, 8rem);
+    text-align: center;
+  }
+
+  .hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--c-border);
+    background: rgba(255, 255, 255, 0.03);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--c-text-dim);
+    letter-spacing: 0.03em;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero__badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c-green);
+    animation: pulse 2.5s infinite;
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--c-heading);
+    letter-spacing: -0.03em;
+    margin: 0 0 1.5rem;
+  }
+
+  .hero__title-line {
+    display: block;
+  }
+
+  .hero__title-line--1 {
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+
+  .hero__title-line--2 {
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  .hero__title-accent {
+    background: linear-gradient(135deg, var(--c-accent) 0%, #fb923c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero__sub {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--c-text-dim);
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s ease 0.4s both;
+  }
+
+  .hero__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.4rem;
+    border-radius: 8px;
+    font-family: var(--font-display);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .hero__btn--primary {
+    background: var(--c-accent);
+    color: #fff;
+    box-shadow: 0 0 20px var(--c-accent-glow), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+
+  .hero__btn--primary:hover {
+    background: #ea6a10;
+    box-shadow: 0 0 30px rgba(249, 115, 22, 0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+    transform: translateY(-1px);
+  }
+
+  .hero__btn--ghost {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--c-text);
+    border: 1px solid var(--c-border);
+  }
+
+  .hero__btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: var(--c-heading);
+  }
+
+  /* ══════════════════════════════════════════
+     TERMINAL
+     ══════════════════════════════════════════ */
+  .terminal-section {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 4rem auto;
+    animation: fadeUp 0.7s ease 0.5s both;
+  }
+
+  .terminal {
+    border-radius: 12px;
+    border: 1px solid var(--c-border);
+    background: rgba(13, 15, 23, 0.8);
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+    box-shadow:
+      0 4px 24px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  }
+
+  .terminal__chrome {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--c-border);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .terminal__dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .terminal__dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .terminal__dots span:nth-child(1) { background: #ff5f57; }
+  .terminal__dots span:nth-child(2) { background: #febc2e; }
+  .terminal__dots span:nth-child(3) { background: #28c840; }
+
+  .terminal__title {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--c-text-dim);
+    margin-right: 36px;
+  }
+
+  .terminal__body {
+    padding: 1.25rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.9;
+  }
+
+  .terminal__line {
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .terminal__line--1 { animation: typeIn 0.5s ease 0.8s both; }
+  .terminal__line--2 { animation: typeIn 0.3s ease 1.4s both; }
+  .terminal__line--3 { animation: typeIn 0.3s ease 1.6s both; }
+  .terminal__line--4 { animation: typeIn 0.5s ease 2.2s both; }
+  .terminal__line--5 { animation: typeIn 0.3s ease 2.8s both; }
+  .terminal__line--6 { animation: typeIn 0.3s ease 3.0s both; }
+  .terminal__line--7 { animation: typeIn 0.3s ease 3.2s both; }
+  .terminal__line--8 { animation: typeIn 0.3s ease 3.6s both; }
+
+  .t-prompt { color: var(--c-green); margin-right: 0.5em; }
+  .t-cmd { color: var(--c-heading); font-weight: 500; }
+  .t-arg { color: var(--c-cyan); margin-left: 0.4em; }
+  .t-str { color: var(--c-accent); margin-left: 0.4em; }
+  .t-flag { color: var(--c-blue); margin-left: 0.4em; }
+  .t-ok { color: var(--c-green); margin-right: 0.4em; }
+  .t-info { color: var(--c-cyan); margin-right: 0.4em; }
+  .t-text { color: var(--c-text); }
+  .t-dim { color: var(--c-text-dim); margin-left: 0.3em; }
+
+  .t-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1.1em;
+    background: var(--c-accent);
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+
+  /* ══════════════════════════════════════════
+     FEATURES
+     ══════════════════════════════════════════ */
+  .features {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 5rem auto;
+    animation: fadeUp 0.6s ease 0.6s both;
+  }
+
+  .features__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--c-border);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--c-border);
+  }
+
+  .feature {
+    padding: 1.75rem;
+    background: var(--c-surface);
+    transition: background 0.25s ease;
+  }
+
+  .feature:hover {
+    background: rgba(13, 15, 23, 0.95);
+  }
+
+  .feature__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--c-accent-glow);
+    color: var(--c-accent);
+    margin-bottom: 1rem;
+  }
+
+  .feature__title {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--c-heading);
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .feature__desc {
+    font-size: 0.84rem;
+    line-height: 1.6;
+    color: var(--c-text-dim);
+    margin: 0;
+  }
+
+  .feature__desc code {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    color: var(--c-text);
+  }
+
+  /* ══════════════════════════════════════════
+     ARCHITECTURE FLOW
+     ══════════════════════════════════════════ */
+  .arch {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 5rem auto;
+    animation: fadeUp 0.6s ease 0.7s both;
+  }
+
+  .arch__title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--c-heading);
+    text-align: center;
+    margin: 0 0 2.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .arch__flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .arch__node {
+    flex: 0 0 auto;
+    text-align: center;
+    padding: 1.25rem 1.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--c-border);
+    background: var(--c-surface);
+    min-width: 140px;
+  }
+
+  .arch__node--highlight {
+    border-color: rgba(249, 115, 22, 0.3);
+    background: rgba(249, 115, 22, 0.05);
+    box-shadow: 0 0 24px rgba(249, 115, 22, 0.08);
+  }
+
+  .arch__node-icon {
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .arch__node-label {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--c-heading);
+    margin-bottom: 0.25rem;
+  }
+
+  .arch__node-detail {
+    font-size: 0.72rem;
+    color: var(--c-text-dim);
+  }
+
+  .arch__connector {
+    display: flex;
+    align-items: center;
+    width: 60px;
+    position: relative;
+  }
+
+  .arch__connector-line {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, var(--c-border), var(--c-text-dim), var(--c-border));
+    position: relative;
+  }
+
+  .arch__connector-line--encrypted {
+    background: linear-gradient(90deg, rgba(249,115,22,0.3), var(--c-accent), rgba(249,115,22,0.3));
+    box-shadow: 0 0 6px var(--c-accent-glow);
+  }
+
+  .arch__connector-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--c-accent);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: flowDot 2s ease-in-out infinite;
+  }
+
+  /* ══════════════════════════════════════════
+     CTA
+     ══════════════════════════════════════════ */
+  .cta {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 4rem 0 6rem;
+    animation: fadeUp 0.6s ease 0.8s both;
+  }
+
+  .cta__text {
+    font-size: 1.1rem;
+    color: var(--c-text-dim);
+    margin: 0 0 1.5rem;
+  }
+
+  .cta__actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ══════════════════════════════════════════
+     RESPONSIVE
+     ══════════════════════════════════════════ */
+  @media (max-width: 640px) {
+    .features__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .arch__flow {
+      flex-direction: column;
+    }
+
+    .arch__connector {
+      width: 1px;
+      height: 40px;
+      flex-direction: column;
+    }
+
+    .arch__connector-line {
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--c-border), var(--c-text-dim), var(--c-border));
+    }
+
+    .arch__connector-line--encrypted {
+      background: linear-gradient(180deg, rgba(249,115,22,0.3), var(--c-accent), rgba(249,115,22,0.3));
+    }
+
+    .arch__connector-dot {
+      animation: flowDotV 2s ease-in-out infinite;
+    }
+
+    .terminal__body {
+      overflow-x: auto;
+    }
+  }
+
+  /* ══════════════════════════════════════════
+     ANIMATIONS
+     ══════════════════════════════════════════ */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes typeIn {
+    from {
+      opacity: 0;
+      max-width: 0;
+    }
+    to {
+      opacity: 1;
+      max-width: 100%;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  @keyframes flowDot {
+    0% { left: 0; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: calc(100% - 4px); opacity: 0; }
+  }
+
+  @keyframes flowDotV {
+    0% { top: 0; opacity: 0; transform: translateX(-50%); }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: calc(100% - 4px); opacity: 0; transform: translateX(-50%); }
+  }
+</style>

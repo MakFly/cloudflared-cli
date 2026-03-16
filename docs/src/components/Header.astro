@@ -1,0 +1,149 @@
+---
+import config from 'virtual:starlight/user-config';
+import Search from 'virtual:starlight/components/Search';
+import SocialIcons from 'virtual:starlight/components/SocialIcons';
+
+const shouldRenderSearch =
+	config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
+---
+
+<div class="cf-header">
+	<a href="/" class="cf-header__brand">
+		<div class="cf-header__logo">
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
+			</svg>
+		</div>
+		<span class="cf-header__title">cloudflared-project</span>
+	</a>
+
+	<nav class="cf-header__nav">
+		<a href="/guides/quickstart/" class="cf-header__link">Quick Start</a>
+		<a href="/reference/commands/" class="cf-header__link">Commands</a>
+		<a href="/reference/configuration/" class="cf-header__link">Config</a>
+	</nav>
+
+	<div class="cf-header__right">
+		{shouldRenderSearch && <div class="cf-header__search"><Search /></div>}
+		<div class="cf-header__social">
+			<SocialIcons />
+		</div>
+	</div>
+</div>
+
+<style>
+	.cf-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 100%;
+		gap: 1rem;
+		font-family: 'Instrument Sans', system-ui, sans-serif;
+	}
+
+	.cf-header__brand {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		text-decoration: none;
+		color: #eef0f6;
+		flex-shrink: 0;
+	}
+
+	.cf-header__brand:hover .cf-header__logo {
+		background: rgba(249, 115, 22, 0.2);
+		border-color: rgba(249, 115, 22, 0.4);
+	}
+
+	.cf-header__logo {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 30px;
+		height: 30px;
+		border-radius: 7px;
+		background: rgba(249, 115, 22, 0.12);
+		border: 1px solid rgba(249, 115, 22, 0.25);
+		color: #f97316;
+		transition: all 0.2s ease;
+	}
+
+	.cf-header__title {
+		font-size: 0.88rem;
+		font-weight: 650;
+		letter-spacing: -0.02em;
+		font-family: 'JetBrains Mono', 'SF Mono', monospace;
+	}
+
+	.cf-header__nav {
+		display: none;
+		align-items: center;
+		gap: 0.25rem;
+	}
+
+	@media (min-width: 50rem) {
+		.cf-header__nav {
+			display: flex;
+		}
+	}
+
+	.cf-header__link {
+		padding: 0.35rem 0.7rem;
+		border-radius: 6px;
+		font-size: 0.82rem;
+		font-weight: 500;
+		color: #7a8194;
+		text-decoration: none;
+		transition: all 0.15s ease;
+		letter-spacing: -0.01em;
+	}
+
+	.cf-header__link:hover {
+		color: #c4cad7;
+		background: rgba(255, 255, 255, 0.04);
+	}
+
+	.cf-header__right {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		flex-shrink: 0;
+	}
+
+	.cf-header__search {
+		display: flex;
+		align-items: center;
+	}
+
+	.cf-header__social {
+		display: none;
+		align-items: center;
+	}
+
+	@media (min-width: 50rem) {
+		.cf-header__social {
+			display: flex;
+		}
+	}
+
+	/* Style the search button to match our theme */
+	.cf-header__search :global(button) {
+		border: 1px solid rgba(255, 255, 255, 0.08) !important;
+		background: rgba(255, 255, 255, 0.03) !important;
+		border-radius: 8px !important;
+	}
+
+	.cf-header__search :global(button:hover) {
+		border-color: rgba(255, 255, 255, 0.15) !important;
+		background: rgba(255, 255, 255, 0.06) !important;
+	}
+
+	.cf-header__social :global(a) {
+		color: #5a6175;
+		transition: color 0.15s ease;
+	}
+
+	.cf-header__social :global(a:hover) {
+		color: #c4cad7;
+	}
+</style>

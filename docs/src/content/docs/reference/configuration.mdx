@@ -1,0 +1,169 @@
+---
+title: Configuration Reference
+description: Reference for cloudflared-project project structure, YAML schemas, and environment variables.
+---
+
+
+
+## Project Directory Structure
+
+By default, `cloudflared-project` stores all project data under `~/.cloudflared/projects/`, leveraging the existing directory created by `cloudflared` itself.
+
+```
+~/.cloudflared/projects/
+└── <project-name>/
+    ├── project.yaml              # Project metadata
+    ├── environments/
+    │   ├── dev.yaml              # Dev tunnel config (cloudflared-native format)
+    │   ├── staging.yaml          # Staging tunnel config
+    │   └── prod.yaml             # Production tunnel config
+    └── logs/
+        ├── dev.log               # Logs for detached dev tunnel
+        └── prod.log              # Logs for detached prod tunnel
+```
+
+> **Tip:**
+  Use `--local` on `init` to create a project in `.cloudflared-project/` within the current directory. This is useful for monorepos where each service manages its own tunnel.
+
+
+---
+
+## `project.yaml` Schema
+
+Stores metadata about the project. Created automatically by `cloudflared-project init`.
+
+```yaml
+# ~/.cloudflared/projects/myapp/project.yaml
+version: "1"
+name: myapp
+default_env: dev
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `version` | `string` | Schema version. Currently `"1"`. |
+| `name` | `string` | Project name. Must match the directory name. |
+| `default_env` | `string` | Default environment when `--env` is not provided. Defaults to `dev`. |
+
+---
+
+## Environment Config Schema (`environments/<env>.yaml`)
+
+Each environment file is a **standard `cloudflared` tunnel configuration** that can be passed directly to `cloudflared tunnel run --config`. `cloudflared-project` reads and writes these files without any proprietary extensions.
+
+### Full example
+
+```yaml
+# ~/.cloudflared/projects/myapp/environments/prod.yaml
+
+tunnel: 550e8400-e29b-41d4-a716-446655440000
+credentials-file: /home/user/.cloudflared/550e8400-e29b-41d4-a716-446655440000.json
+
+ingress:
+  - hostname: myapp.example.com
+    service: http://localhost:8080
+    originRequest:
+      connectTimeout: 30s
+      tlsTimeout: 30s
+      noTLSVerify: false
+  - hostname: api.myapp.example.com
+    service: http://localhost:8081
+  - service: http_status:404
+
+warp-routing:
+  enabled: false
+```
+
+### Top-level fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `tunnel` | `string` | Yes | Tunnel UUID or name. |
+| `credentials-file` | `string` | Yes | Absolute path to the tunnel credentials JSON file. |
+| `ingress` | `IngressRule[]` | Yes | List of ingress rules. Must end with a catch-all rule. |
+| `originRequest` | `OriginRequest` | No | Default origin settings applied to all ingress rules. Can be overridden per-rule. |
+| `warp-routing` | `WarpRouting` | No | WARP routing configuration for private network access. |
+
+### `IngressRule`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `hostname` | `string` | Hostname to match (e.g., `app.example.com`). Omit for catch-all. |
+| `service` | `string` | Backend service URL (e.g., `http://localhost:3000`) or status code (e.g., `http_status:404`). |
+| `path` | `string` | Optional URL path prefix to match (e.g., `/api`). |
+| `originRequest` | `OriginRequest` | Per-rule origin settings. Overrides top-level `originRequest`. |
+
+> **Note:**
+  The last ingress rule must be a catch-all (no `hostname` and no `path`). `cloudflared-project config validate` enforces this.
+
+
+### `OriginRequest`
+
+Controls how `cloudflared` connects to origin services.
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `connectTimeout` | `duration` | `30s` | TCP connection timeout to origin. |
+| `tlsTimeout` | `duration` | `10s` | TLS handshake timeout. |
+| `tcpKeepAlive` | `duration` | `30s` | TCP keep-alive interval. |
+| `noHappyEyeballs` | `bool` | `false` | Disable Happy Eyeballs (dual IPv4/IPv6 connection racing). |
+| `keepAliveTimeout` | `duration` | `90s` | Idle keep-alive connection timeout. |
+| `keepAliveConnections` | `int` | `100` | Maximum number of keep-alive connections. |
+| `httpHostHeader` | `string` | — | Override the `Host` header sent to the origin. |
+| `originServerName` | `string` | — | Override the SNI hostname for TLS verification. |
+| `noTLSVerify` | `bool` | `false` | Disable TLS certificate verification (not recommended for production). |
+| `disableChunkedEncoding` | `bool` | `false` | Disable chunked transfer encoding. |
+| `proxyAddress` | `string` | — | SOCKS or HTTP proxy address for origin connections. |
+| `proxyPort` | `int` | — | Proxy port. |
+| `proxyType` | `string` | — | Proxy type: `socks` or `http`. |
+
+Duration values use Go duration syntax: `10s`, `1m`, `500ms`.
+
+### `WarpRouting`
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `enabled` | `bool` | `false` | Enable routing of private network traffic through the tunnel (requires WARP client). |
+
+---
+
+## Multi-Environment Configuration
+
+`cloudflared-project` resolves the active environment in this order:
+
+1. `--env` / `-e` flag (highest priority)
+2. `CLOUDFLARED_PROJECT_ENV` environment variable
+3. `default_env` in `project.yaml`
+4. Fallback to `dev`
+
+---
+
+## Environment Variables
+
+All flags can be set via environment variables using the `CLOUDFLARED_PROJECT_` prefix.
+
+| Variable | Equivalent Flag | Description |
+|----------|----------------|-------------|
+| `CLOUDFLARED_PROJECT_ENV` | `--env` | Target environment |
+| `CLOUDFLARED_PROJECT_VERBOSE` | `--verbose` | Enable verbose output |
+| `CLOUDFLARED_PROJECT_CLOUDFLARED_PATH` | `--cloudflared-path` | Path to `cloudflared` binary |
+
+---
+
+## Credentials Files
+
+Tunnel credentials (generated by `cloudflared tunnel create`) are stored as JSON files alongside environment configs:
+
+```
+environments/
+├── dev.yaml            # Tunnel config (safe to commit)
+├── dev.json            # Tunnel credentials (SECRET — do not commit)
+├── prod.yaml           # Tunnel config (safe to commit)
+└── prod.json           # Tunnel credentials (SECRET — do not commit)
+```
+
+> **Caution:**
+  The `.json` credentials files contain your tunnel secret. Add `environments/*.json` to your `.gitignore`. Never commit these files.
+
+
+The `credentials-file` field in each environment YAML must point to the absolute path of the corresponding JSON file.

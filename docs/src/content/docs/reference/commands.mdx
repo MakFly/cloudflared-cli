@@ -1,0 +1,295 @@
+---
+title: Command Reference
+description: Complete reference for all cloudflared-project commands and flags.
+---
+
+
+
+## Global Flags
+
+These flags are available on every command.
+
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--project` | `-p` | — | Project name (resolved from `~/.cloudflared/projects/`) |
+| `--env` | `-e` | `dev` | Target environment (`dev`, `staging`, `prod`) |
+| `--project-dir` | — | — | Explicit project directory path (overrides `--project`) |
+| `--verbose` | `-v` | `false` | Enable verbose output |
+| `--cloudflared-path` | — | auto-detect | Explicit path to `cloudflared` binary |
+
+Environment variable overrides (prefix `CLOUDFLARED_PROJECT_`):
+
+```bash
+CLOUDFLARED_PROJECT_ENV=prod
+CLOUDFLARED_PROJECT_VERBOSE=true
+CLOUDFLARED_PROJECT_CLOUDFLARED_PATH=/usr/local/bin/cloudflared
+```
+
+---
+
+## `init`
+
+Initialize a new cloudflared project.
+
+```bash
+cloudflared-project init <name> [flags]
+```
+
+Creates a project directory at `~/.cloudflared/projects/<name>/` (or in the current directory with `--local`) with a `project.yaml` and a default `dev` environment configuration.
+
+**Arguments**
+
+| Argument | Description |
+|----------|-------------|
+| `<name>` | Project name (required) |
+
+**Flags**
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--domain` | — | Pre-populate ingress rules with this hostname |
+| `--tunnel-name` | `<name>-<env>` | Override the generated tunnel name |
+| `--force` | `false` | Overwrite an existing project |
+| `--local` | `false` | Create in `.cloudflared-project/` in the current directory instead of `~/.cloudflared/projects/` |
+
+**Examples**
+
+```bash
+# Basic initialization
+cloudflared-project init myapp
+
+# With domain and custom tunnel name
+cloudflared-project init myapp --domain app.example.com --tunnel-name my-tunnel
+
+# Local project (useful for monorepos)
+cloudflared-project init myapp --local
+
+# Overwrite existing
+cloudflared-project init myapp --force
+```
+
+---
+
+## `login`
+
+Authenticate with Cloudflare.
+
+```bash
+cloudflared-project login
+```
+
+Opens a browser window to authorize `cloudflared` access to your Cloudflare account. Saves a certificate to `~/.cloudflared/cert.pem`. This is a thin wrapper around `cloudflared tunnel login`.
+
+No additional flags beyond [global flags](#global-flags).
+
+---
+
+## `tunnel`
+
+Manage cloudflared tunnels. Requires `--project` / `-p`.
+
+### `tunnel create`
+
+```bash
+cloudflared-project -p <project> tunnel create <name>
+```
+
+Creates a new Cloudflare Tunnel and stores credentials in the project's environment directory.
+
+### `tunnel list`
+
+```bash
+cloudflared-project -p <project> tunnel list
+```
+
+Lists all tunnels associated with your Cloudflare account.
+
+### `tunnel delete`
+
+```bash
+cloudflared-project -p <project> tunnel delete <name>
+```
+
+Deletes a tunnel. The tunnel must not be running.
+
+### `tunnel info`
+
+```bash
+cloudflared-project -p <project> tunnel info <name>
+```
+
+Shows detailed information about a tunnel, including its ID, creation date, and connector status.
+
+---
+
+## `config`
+
+Manage tunnel configuration for a project environment. Requires `--project` / `-p`.
+
+### `config show`
+
+```bash
+cloudflared-project -p <project> [-e <env>] config show
+```
+
+Prints the resolved tunnel configuration for the specified environment as YAML.
+
+### `config set`
+
+```bash
+cloudflared-project -p <project> [-e <env>] config set <key> <value>
+```
+
+Sets a top-level configuration value. Supported keys: `tunnel`, `credentials-file`, `warp-routing`.
+
+### `config add-ingress`
+
+```bash
+cloudflared-project -p <project> [-e <env>] config add-ingress --hostname <hostname> --service <service> [--path <path>]
+```
+
+Appends an ingress rule. The rule is inserted before the catch-all entry.
+
+**Flags**
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--hostname` | No | Hostname to match (e.g., `api.example.com`) |
+| `--service` | Yes | Backend service URL (e.g., `http://localhost:8080`) |
+| `--path` | No | URL path prefix to match (e.g., `/api`) |
+
+```bash
+# Route a hostname to a local service
+cloudflared-project -p myapp config add-ingress --hostname api.example.com --service http://localhost:8080
+
+# Route with a path prefix
+cloudflared-project -p myapp config add-ingress --hostname app.example.com --service http://localhost:3001 --path /api
+```
+
+### `config remove-ingress`
+
+```bash
+cloudflared-project -p <project> [-e <env>] config remove-ingress <hostname>
+```
+
+Removes an ingress rule by hostname.
+
+### `config validate`
+
+```bash
+cloudflared-project -p <project> [-e <env>] config validate
+```
+
+Validates the tunnel configuration. Checks for:
+- Tunnel ID is set (valid UUID or name)
+- Credentials file path is configured
+- At least one ingress rule exists
+- Catch-all rule is present and last
+- Every ingress rule has a `service` field
+
+Exit code `0` on success, non-zero on validation failure.
+
+---
+
+## `deploy`
+
+Validate configuration, optionally route DNS, and start the tunnel.
+
+```bash
+cloudflared-project -p <project> [-e <env>] deploy [flags]
+```
+
+**Flags**
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--detach` | `false` | Run tunnel in the background. Logs are written to `<project-dir>/logs/<env>.log` |
+| `--route-dns` | `false` | Create `CNAME` DNS records in Cloudflare for each ingress hostname before starting |
+
+**Examples**
+
+```bash
+# Foreground mode (development)
+cloudflared-project -p myapp deploy
+
+# Background mode
+cloudflared-project -p myapp -e prod deploy --detach
+
+# Full production deploy
+cloudflared-project -p myapp -e prod deploy --detach --route-dns
+```
+
+> **Note:**
+  `deploy` always runs `config validate` before starting. If validation fails, the tunnel does not start.
+
+
+---
+
+## `status`
+
+Show the current status of a deployed tunnel.
+
+```bash
+cloudflared-project -p <project> [-e <env>] status [flags]
+```
+
+Displays:
+- Local process state (running / not running, PID)
+- Tunnel ID and credentials file path
+- Active ingress rules
+- Installed `cloudflared` version
+
+**Flags**
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--watch` | `false` | Continuously refresh status every 5 seconds |
+
+**Examples**
+
+```bash
+cloudflared-project -p myapp status
+cloudflared-project -p myapp -e prod status --watch
+```
+
+---
+
+## `logs`
+
+Tail tunnel logs (only available for tunnels started with `--detach`).
+
+```bash
+cloudflared-project -p <project> [-e <env>] logs [flags]
+```
+
+Logs are stored at `<project-dir>/logs/<env>.log`.
+
+**Flags**
+
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--follow` | `-f` | `false` | Stream new log lines as they are written |
+| `--lines` | `-n` | `0` | Number of recent lines to display (defaults to last 20 when omitted) |
+
+**Examples**
+
+```bash
+# Show last 20 lines
+cloudflared-project -p myapp logs
+
+# Show last 50 lines
+cloudflared-project -p myapp logs --lines 50
+
+# Stream live logs
+cloudflared-project -p myapp -e prod logs --follow
+```
+
+---
+
+## `version`
+
+Print the `cloudflared-project` version.
+
+```bash
+cloudflared-project version
+```

@@ -1,0 +1,109 @@
+---
+title: Installation
+description: Install cloudflared-project and its dependencies on macOS and Linux.
+---
+
+This guide covers installing `cloudflared-project` and its prerequisite, the `cloudflared` binary.
+
+## Prerequisites
+
+### Go 1.26+
+
+`cloudflared-project` is written in Go. You need Go 1.26 or later to install from source.
+
+**macOS:**
+
+```bash
+brew install go
+```
+
+**Linux:**
+
+```bash
+# Download from https://go.dev/dl/ and follow the official instructions
+wget https://go.dev/dl/go1.26.0.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.26.0.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+```
+
+Verify your Go installation:
+
+```bash
+go version
+# go version go1.26.0 darwin/arm64
+```
+
+### cloudflared binary
+
+`cloudflared-project` wraps the official `cloudflared` binary. It must be installed and accessible in your `PATH`.
+
+**macOS:**
+
+```bash
+brew install cloudflared
+```
+
+**Linux (apt):**
+
+```bash
+curl -L --output cloudflared.deb \
+  https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+sudo dpkg -i cloudflared.deb
+```
+
+**Linux (rpm):**
+
+```bash
+curl -L --output cloudflared.rpm \
+  https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-x86_64.rpm
+sudo rpm -i cloudflared.rpm
+```
+
+Verify the installation:
+
+```bash
+cloudflared --version
+# cloudflared version 2024.x.x
+```
+
+## Install cloudflared-project
+
+### Option 1 — via `go install` (recommended)
+
+```bash
+go install github.com/kev/cloudflared-cli@latest
+```
+
+This places the `cloudflared-project` binary in your `$GOPATH/bin` (usually `~/go/bin`). Make sure that directory is in your `PATH`:
+
+```bash
+export PATH=$PATH:$(go env GOPATH)/bin
+```
+
+### Option 2 — from source
+
+```bash
+# Clone the repository
+git clone https://github.com/kev/cloudflared-cli.git
+cd cloudflared-cli
+
+# Build and install
+make build
+
+# Or manually
+go build -o cloudflared-project .
+mv cloudflared-project /usr/local/bin/
+```
+
+## Verify Installation
+
+```bash
+cloudflared-project version
+# cloudflared-project v0.1.0
+```
+
+> **Tip:** If the command is not found, ensure `$GOPATH/bin` (or `/usr/local/bin`) is in your `PATH`. Add the appropriate `export PATH=...` line to your shell profile (`.bashrc`, `.zshrc`, etc.).
+
+## Next Steps
+
+With `cloudflared-project` installed, proceed to the [Quick Start](/guides/quickstart/) to create your first tunnel.

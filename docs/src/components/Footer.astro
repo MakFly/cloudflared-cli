@@ -1,0 +1,77 @@
+---
+import Pagination from 'virtual:starlight/components/Pagination';
+---
+
+<footer class="cf-footer">
+	<Pagination />
+	<div class="cf-footer__bar">
+		<div class="cf-footer__left">
+			<span class="cf-footer__brand">cloudflared-project</span>
+			<span class="cf-footer__sep">&middot;</span>
+			<span class="cf-footer__copy">Open source CLI for Cloudflare Tunnels</span>
+		</div>
+		<div class="cf-footer__links">
+			<a href="/guides/quickstart/">Docs</a>
+			<a href="/reference/commands/">Reference</a>
+			<a href="https://github.com/kev/cloudflared-cli" target="_blank" rel="noopener">GitHub</a>
+		</div>
+	</div>
+</footer>
+
+<style>
+	.cf-footer {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		margin-top: 2rem;
+	}
+
+	.cf-footer__bar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		padding: 1.25rem 0 1rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.cf-footer__left {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.78rem;
+	}
+
+	.cf-footer__brand {
+		font-family: 'JetBrains Mono', monospace;
+		font-weight: 600;
+		color: #8891a4;
+		font-size: 0.76rem;
+	}
+
+	.cf-footer__sep {
+		color: rgba(255, 255, 255, 0.12);
+	}
+
+	.cf-footer__copy {
+		color: #5e6679;
+	}
+
+	.cf-footer__links {
+		display: flex;
+		gap: 1.25rem;
+	}
+
+	.cf-footer__links a {
+		font-size: 0.78rem;
+		font-weight: 500;
+		color: #5e6679;
+		text-decoration: none;
+		transition: color 0.15s ease;
+	}
+
+	.cf-footer__links a:hover {
+		color: #e2e5ec;
+	}
+</style>

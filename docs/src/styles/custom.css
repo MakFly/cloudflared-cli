@@ -1,0 +1,334 @@
+/* ════════════════════════════════════════════
+   Force dark theme — no toggle
+   ════════════════════════════════════════════ */
+:root {
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  color-scheme: dark;
+}
+starlight-theme-select {
+  display: none !important;
+}
+
+/* ════════════════════════════════════════════
+   Dark theme tokens — applied everywhere
+   ════════════════════════════════════════════ */
+:root,
+:root[data-theme="light"],
+:root[data-theme="dark"] {
+  /* White text for readability */
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #e2e5ec;
+  --sl-color-gray-2: #b0b7c5;
+  --sl-color-gray-3: #8891a4;
+  --sl-color-gray-4: #5e6679;
+  --sl-color-gray-5: #2a2e3b;
+  --sl-color-gray-6: #161922;
+  --sl-color-black: #07080d;
+
+  /* Backgrounds */
+  --sl-color-bg: #07080d;
+  --sl-color-bg-nav: rgba(7, 8, 13, 0.92);
+  --sl-color-bg-sidebar: #0a0b12;
+  --sl-color-bg-inline-code: rgba(255, 255, 255, 0.08);
+
+  /* Borders */
+  --sl-color-hairline-shade: rgba(255, 255, 255, 0.08);
+  --sl-color-hairline-light: rgba(255, 255, 255, 0.05);
+
+  /* Accent — orange */
+  --sl-color-accent-low: rgba(249, 115, 22, 0.12);
+  --sl-color-accent: #f97316;
+  --sl-color-accent-high: #fdba74;
+
+  /* Text — WHITE by default */
+  --sl-color-text: #e8ebf0;
+  --sl-color-text-accent: #fdba74;
+  --sl-color-text-invert: #07080d;
+
+  --sl-nav-height: 3.5rem;
+
+  /* Starlight component tokens */
+  --sl-color-bg-badge: rgba(249, 115, 22, 0.12);
+}
+
+/* ════════════════════════════════════════════
+   Header bar
+   ════════════════════════════════════════════ */
+header.header {
+  background: var(--sl-color-bg-nav) !important;
+  backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* ════════════════════════════════════════════
+   Sidebar
+   ════════════════════════════════════════════ */
+.sidebar-pane {
+  background: var(--sl-color-bg-sidebar) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+nav.sidebar a {
+  font-size: 0.84rem;
+  color: var(--sl-color-gray-2) !important;
+}
+
+nav.sidebar a:hover {
+  color: var(--sl-color-white) !important;
+}
+
+/* Sidebar active — force white text, no orange bg, no flash.
+   Starlight uses @layer starlight.core, so unlayered CSS wins. */
+.sidebar-pane a[aria-current="true"],
+.sidebar-pane a[aria-current="page"],
+a[aria-current="true"],
+a[aria-current="page"] {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+/* ════════════════════════════════════════════
+   Splash page — full-width content
+   ════════════════════════════════════════════ */
+[data-has-hero] .hero:not([class*="hero__"]) {
+  display: none !important;
+}
+
+[data-has-hero] .main-pane,
+[data-has-hero] .content-panel,
+[data-has-hero] .content-panel > .sl-container,
+[data-has-hero] .sl-markdown-content {
+  max-width: none;
+  padding-inline: 0;
+}
+
+[data-has-hero] .content-panel {
+  padding: 0;
+}
+
+/* ════════════════════════════════════════════
+   Typography — WHITE headings, readable body
+   ════════════════════════════════════════════ */
+body {
+  font-family: 'Instrument Sans', system-ui, sans-serif;
+  color: var(--sl-color-text);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Instrument Sans', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+  color: var(--sl-color-white) !important;
+}
+
+.sl-markdown-content {
+  color: var(--sl-color-text);
+}
+
+.sl-markdown-content p,
+.sl-markdown-content li,
+.sl-markdown-content td {
+  color: var(--sl-color-gray-1);
+}
+
+.sl-markdown-content strong {
+  color: var(--sl-color-white);
+}
+
+/* ════════════════════════════════════════════
+   Code blocks
+   ════════════════════════════════════════════ */
+pre {
+  background: #0c0e16 !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 10px !important;
+}
+
+code {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace;
+  font-size: 0.85em;
+}
+
+:not(pre) > code {
+  background: var(--sl-color-bg-inline-code) !important;
+  color: var(--sl-color-white) !important;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+/* ════════════════════════════════════════════
+   Tables
+   ════════════════════════════════════════════ */
+.sl-markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.sl-markdown-content th {
+  color: var(--sl-color-white) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  font-weight: 600;
+  text-align: left;
+}
+
+.sl-markdown-content td {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.sl-markdown-content th,
+.sl-markdown-content td {
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sl-markdown-content td code {
+  font-size: 0.82em;
+  color: var(--sl-color-accent-high) !important;
+}
+
+/* ════════════════════════════════════════════
+   Starlight components: Tabs
+   ════════════════════════════════════════════ */
+starlight-tabs {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+starlight-tabs [role="tablist"] {
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+starlight-tabs [role="tab"] {
+  color: var(--sl-color-gray-3) !important;
+  font-weight: 500;
+}
+
+starlight-tabs [role="tab"][aria-selected="true"] {
+  color: var(--sl-color-white) !important;
+  border-color: var(--sl-color-accent) !important;
+}
+
+starlight-tabs [role="tabpanel"] {
+  color: var(--sl-color-text);
+}
+
+/* ════════════════════════════════════════════
+   Starlight components: Steps
+   ════════════════════════════════════════════ */
+.sl-steps > li::before {
+  background: var(--sl-color-accent) !important;
+  color: var(--sl-color-text-invert) !important;
+  font-weight: 700;
+}
+
+.sl-steps > li::after {
+  background: rgba(249, 115, 22, 0.2) !important;
+}
+
+/* ════════════════════════════════════════════
+   Starlight components: Aside / Callouts
+   ════════════════════════════════════════════ */
+.starlight-aside {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  color: var(--sl-color-text) !important;
+}
+
+.starlight-aside p {
+  color: var(--sl-color-gray-1) !important;
+}
+
+.starlight-aside--note {
+  border-left-color: var(--sl-color-accent) !important;
+}
+
+.starlight-aside--tip {
+  border-left-color: var(--sl-color-accent) !important;
+}
+
+.starlight-aside--caution {
+  border-left-color: #eab308 !important;
+}
+
+/* ════════════════════════════════════════════
+   Links
+   ════════════════════════════════════════════ */
+.sl-markdown-content a:not([class]) {
+  color: var(--sl-color-accent);
+  text-decoration-color: rgba(249, 115, 22, 0.3);
+  text-underline-offset: 0.15em;
+}
+
+.sl-markdown-content a:not([class]):hover {
+  text-decoration-color: var(--sl-color-accent);
+}
+
+/* ════════════════════════════════════════════
+   Pagination (prev/next)
+   ════════════════════════════════════════════ */
+.pagination-links a {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.pagination-links a:hover {
+  border-color: rgba(249, 115, 22, 0.3) !important;
+  background: rgba(249, 115, 22, 0.05) !important;
+}
+
+.pagination-links .link-title {
+  color: var(--sl-color-white) !important;
+}
+
+/* ════════════════════════════════════════════
+   Footer override — hide default, our custom
+   shows via component override
+   ════════════════════════════════════════════ */
+footer.sl-flex > .meta {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 1.5rem;
+}
+
+/* ════════════════════════════════════════════
+   Search modal
+   ════════════════════════════════════════════ */
+[data-theme] {
+  --pagefind-ui-primary: #f97316;
+  --pagefind-ui-text: #e8ebf0;
+  --pagefind-ui-background: #0d0f17;
+  --pagefind-ui-border: rgba(255, 255, 255, 0.1);
+  --pagefind-ui-tag: rgba(249, 115, 22, 0.15);
+}
+
+/* ════════════════════════════════════════════
+   Page title
+   ════════════════════════════════════════════ */
+h1#_top {
+  color: var(--sl-color-white) !important;
+  font-weight: 700;
+}
+
+/* ════════════════════════════════════════════
+   Mobile menu
+   ════════════════════════════════════════════ */
+.mobile-preferences {
+  background: var(--sl-color-bg) !important;
+}
+
+/* ════════════════════════════════════════════
+   Scrollbar
+   ════════════════════════════════════════════ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}

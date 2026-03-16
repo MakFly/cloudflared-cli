@@ -1,0 +1,161 @@
+---
+title: Multi-Environment Setup
+description: Manage dev, staging, and production Cloudflare Tunnels from a single cloudflared-project configuration.
+---
+
+`cloudflared-project` treats environments as first-class citizens. Each project can have isolated tunnel configurations for `dev`, `staging`, and `prod` — different tunnels, different ingress rules, different service URLs.
+
+## Project Structure
+
+After initializing a project, the directory layout is:
+
+```
+~/.cloudflared/projects/myapp/
+├── project.yaml              # Project metadata
+└── environments/
+    ├── dev.yaml              # Dev environment tunnel config
+    ├── staging.yaml          # Staging environment tunnel config
+    └── prod.yaml             # Production environment tunnel config
+```
+
+Each `environments/<env>.yaml` file is a standard `cloudflared` configuration that can be passed directly to `cloudflared tunnel run --config`.
+
+## Setting the Active Environment
+
+Use the `--env` / `-e` flag on any command to target a specific environment. The default is `dev`.
+
+```bash
+# Target staging
+cloudflared-project -p myapp -e staging config show
+
+# Target production
+cloudflared-project -p myapp -e prod deploy --route-dns
+```
+
+You can also set the environment via an environment variable:
+
+```bash
+export CLOUDFLARED_PROJECT_ENV=staging
+cloudflared-project -p myapp deploy
+```
+
+## Creating Environment Configurations
+
+### Step 1 — Create the tunnel for each environment
+
+```bash
+cloudflared-project -p myapp tunnel create myapp-dev
+cloudflared-project -p myapp -e staging tunnel create myapp-staging
+cloudflared-project -p myapp -e prod tunnel create myapp-prod
+```
+
+### Step 2 — Configure ingress rules per environment
+
+**Dev:**
+
+```bash
+cloudflared-project -p myapp -e dev \
+  config add-ingress --hostname dev.myapp.example.com --service http://localhost:3000
+```
+
+**Staging:**
+
+```bash
+cloudflared-project -p myapp -e staging \
+  config add-ingress --hostname staging.myapp.example.com --service http://localhost:3001
+```
+
+**Prod:**
+
+```bash
+cloudflared-project -p myapp -e prod \
+  config add-ingress --hostname myapp.example.com --service http://localhost:8080
+```
+
+### Step 3 — Validate all configurations
+
+```bash
+cloudflared-project -p myapp -e dev config validate
+cloudflared-project -p myapp -e staging config validate
+cloudflared-project -p myapp -e prod config validate
+```
+
+### Step 4 — Deploy per environment
+
+```bash
+# Deploy dev (foreground, interactive)
+cloudflared-project -p myapp -e dev deploy
+
+# Deploy staging (background)
+cloudflared-project -p myapp -e staging deploy --detach
+
+# Deploy production (background, with DNS routing)
+cloudflared-project -p myapp -e prod deploy --detach --route-dns
+```
+
+## Example Environment Files
+
+### `environments/dev.yaml`
+
+```yaml
+tunnel: a1b2c3d4-dev-tunnel-uuid
+credentials-file: /home/user/.cloudflared/a1b2c3d4-dev-tunnel-uuid.json
+ingress:
+  - hostname: dev.myapp.example.com
+    service: http://localhost:3000
+    originRequest:
+      connectTimeout: 10s
+  - service: http_status:404
+```
+
+### `environments/prod.yaml`
+
+```yaml
+tunnel: e5f6a7b8-prod-tunnel-uuid
+credentials-file: /home/user/.cloudflared/e5f6a7b8-prod-tunnel-uuid.json
+ingress:
+  - hostname: myapp.example.com
+    service: http://localhost:8080
+    originRequest:
+      connectTimeout: 30s
+      tlsTimeout: 30s
+  - hostname: api.myapp.example.com
+    service: http://localhost:8081
+  - service: http_status:404
+warp-routing:
+  enabled: false
+```
+
+## Setting a Default Environment
+
+By default, `cloudflared-project` uses `dev`. To change the default for a project, edit `project.yaml`:
+
+```yaml
+# ~/.cloudflared/projects/myapp/project.yaml
+version: "1"
+name: myapp
+default_env: staging
+```
+
+## Best Practices
+
+- **One tunnel per environment** — avoids credential conflicts and makes rollbacks straightforward.
+- **Separate domains per environment** — `dev.app.com`, `staging.app.com`, `app.com` for clear separation.
+- **Use `--detach` for staging and prod** — foreground mode is for development only.
+- **Always validate before deploying to prod** — run `config validate` as part of your CI pipeline.
+- **Store projects in version control** — the `environments/*.yaml` files contain no secrets (credentials are separate `.json` files) and should be committed.
+
+> **Caution:** The `environments/*.json` credentials files **do** contain sensitive secrets. Never commit them to version control. Add `*.json` to your `.gitignore` within the project directory.
+
+## Monitoring Multiple Environments
+
+```bash
+# Check dev status
+cloudflared-project -p myapp -e dev status
+
+# Check prod status with live refresh
+cloudflared-project -p myapp -e prod status --watch
+
+# Tail prod logs
+cloudflared-project -p myapp -e prod logs --follow
+```

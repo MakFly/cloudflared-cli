@@ -1,0 +1,133 @@
+---
+title: Quick Start
+description: Create and deploy your first Cloudflare Tunnel in under five minutes using cloudflared-project.
+---
+
+This tutorial walks you through creating and deploying a Cloudflare Tunnel for a local web application. By the end, traffic to `app.example.com` will be securely routed to your local service.
+
+## Before You Begin
+
+- `cloudflared-project` is [installed](/guides/installation/)
+- `cloudflared` binary is installed and in your `PATH`
+- You have a Cloudflare account with a domain configured
+
+## Walkthrough
+
+### 1. Authenticate with Cloudflare
+
+```bash
+cloudflared-project login
+```
+
+This opens your browser and prompts you to authorize `cloudflared` to access your Cloudflare account. A certificate is saved to `~/.cloudflared/cert.pem`.
+
+Expected output:
+
+```
+A browser window should open at the following URL:
+https://dash.cloudflare.com/argotunnel?...
+Waiting for login...
+You have successfully logged in.
+```
+
+> **Note:** If a browser does not open, copy the URL printed in the terminal and open it manually.
+
+### 2. Initialize a project
+
+```bash
+cloudflared-project init myapp --domain app.example.com
+```
+
+This creates a project directory at `~/.cloudflared/projects/myapp/` with a default `dev` environment configuration.
+
+Expected output:
+
+```
+✓ Project "myapp" initialized
+  Location: ~/.cloudflared/projects/myapp
+  Default environment: dev
+  Domain: app.example.com
+```
+
+The `--domain` flag pre-populates your ingress rules with the given hostname pointing to `http://localhost:8080` by default.
+
+### 3. Create a tunnel
+
+```bash
+cloudflared-project -p myapp tunnel create myapp
+```
+
+This calls `cloudflared tunnel create` and stores the tunnel credentials in your project directory.
+
+Expected output:
+
+```
+✓ Tunnel "myapp" created with ID: 550e8400-e29b-41d4-a716-446655440000
+  Credentials saved to: ~/.cloudflared/550e8400-e29b-41d4-a716-446655440000.json
+  Config updated: tunnel ID and credentials-file set for env "dev"
+```
+
+> **Tip:** The `-p myapp` flag tells `cloudflared-project` which project to operate on. You can also use `--project myapp`.
+
+### 4. Review the configuration
+
+```bash
+cloudflared-project -p myapp config show
+```
+
+This prints the resolved tunnel configuration for the current environment (`dev` by default):
+
+```yaml
+tunnel: 550e8400-e29b-41d4-a716-446655440000
+credentials-file: ~/.cloudflared/550e8400-e29b-41d4-a716-446655440000.json
+ingress:
+  - hostname: app.example.com
+    service: http://localhost:8080
+  - service: http_status:404
+```
+
+If you need to adjust the local service URL, use:
+
+```bash
+cloudflared-project -p myapp config add-ingress --hostname app.example.com --service http://localhost:3000
+```
+
+### 5. Deploy
+
+```bash
+cloudflared-project -p myapp deploy --route-dns
+```
+
+The `--route-dns` flag automatically creates the `CNAME` record in your Cloudflare zone, pointing `app.example.com` to your tunnel. The tunnel then starts in the foreground.
+
+Expected output:
+
+```
+✓ Configuration validated [dev]
+✓ DNS routed: app.example.com
+→ Starting tunnel [dev] (Ctrl+C to stop)...
+```
+
+Your application is now accessible at `https://app.example.com`.
+
+## Running in Background
+
+To run the tunnel as a background process:
+
+```bash
+cloudflared-project -p myapp deploy --detach
+# ✓ Tunnel started in background (PID: 12345) [dev]
+```
+
+Check status and logs:
+
+```bash
+cloudflared-project -p myapp status
+cloudflared-project -p myapp logs --follow
+```
+
+## Next Steps
+
+- Set up [multiple environments](/guides/multi-environment/) (dev/staging/prod)
+- Explore the full [command reference](/reference/commands/)
+- Review the [configuration reference](/reference/configuration/)
