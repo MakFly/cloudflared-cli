@@ -49,6 +49,10 @@ starlight-theme-select {
 
   --sl-nav-height: 3.5rem;
 
+  /* Layout proportions */
+  --sl-content-width: 52rem;
+  --sl-sidebar-width: 15rem;
+
   /* Starlight component tokens */
   --sl-color-bg-badge: rgba(249, 115, 22, 0.12);
 }
@@ -106,6 +110,11 @@ a[aria-current="page"] {
 
 [data-has-hero] .content-panel {
   padding: 0;
+}
+
+/* Homepage: hide pagination */
+[data-has-hero] .pagination-links {
+  display: none !important;
 }
 
 /* ════════════════════════════════════════════
@@ -280,14 +289,7 @@ starlight-tabs [role="tabpanel"] {
   color: var(--sl-color-white) !important;
 }
 
-/* ════════════════════════════════════════════
-   Footer override — hide default, our custom
-   shows via component override
-   ════════════════════════════════════════════ */
-footer.sl-flex > .meta {
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding-top: 1.5rem;
-}
+/* Footer handled by custom Footer.astro component */
 
 /* ════════════════════════════════════════════
    Search modal
