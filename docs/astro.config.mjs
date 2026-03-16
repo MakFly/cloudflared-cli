@@ -38,7 +38,7 @@ export default defineConfig({
         ThemeSelect: './src/components/ThemeSelect.astro',
       },
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/kev/cloudflared-cli' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/MakFly/cloudflared-cli' },
       ],
       head: [
         {
@@ -112,7 +112,7 @@ export default defineConfig({
         },
       ],
       editLink: {
-        baseUrl: 'https://github.com/kev/cloudflared-cli/edit/main/docs/',
+        baseUrl: 'https://github.com/MakFly/cloudflared-cli/edit/main/docs/',
       },
     }),
   ],
