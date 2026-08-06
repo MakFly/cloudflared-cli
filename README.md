@@ -1,8 +1,8 @@
 # cloudflared-project
 
-[![Go Version](https://img.shields.io/github/go-mod/go-version/MakFly/cloudflared-cli)](https://go.dev/)
-[![License](https://img.shields.io/github/license/MakFly/cloudflared-cli)](LICENSE)
-[![Release](https://img.shields.io/github/v/release/MakFly/cloudflared-cli)](https://github.com/MakFly/cloudflared-cli/releases)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/dev-toolings/cloudflared-cli)](https://go.dev/)
+[![License](https://img.shields.io/github/license/dev-toolings/cloudflared-cli)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/dev-toolings/cloudflared-cli)](https://github.com/dev-toolings/cloudflared-cli/releases)
 
 > Production-grade CLI wrapper for Cloudflare Tunnel management.
 
@@ -21,13 +21,13 @@
 
 ```bash
 # One-line installer
-curl -fsSL https://raw.githubusercontent.com/MakFly/cloudflared-cli/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/dev-toolings/cloudflared-cli/main/scripts/install.sh | bash
 
 # Or via go install
-go install github.com/MakFly/cloudflared-cli@latest
+go install github.com/dev-toolings/cloudflared-cli@latest
 
 # Or from source
-git clone https://github.com/MakFly/cloudflared-cli.git
+git clone https://github.com/dev-toolings/cloudflared-cli.git
 cd cloudflared-cli
 make build
 ```
